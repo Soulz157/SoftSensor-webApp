@@ -8,16 +8,20 @@ import { CreateWorkspaceDialog } from "@/components/create-project-dialog";
 
 export default function Home() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <Header onCreateWorkspace={() => setCreateDialogOpen(true)} />
+        <Header
+          onCreateWorkspace={() => setCreateDialogOpen(true)}
+          onMenuClick={() => setSidebarOpen(true)}
+        />
 
         {/* Dashboard Content */}
         <DashboardContent />

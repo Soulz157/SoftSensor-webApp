@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Search, Bell, User } from "lucide-react";
+import Link from "next/link";
+import { Plus, Bell, User, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,31 +14,31 @@ import {
 
 interface HeaderProps {
   onCreateWorkspace?: () => void;
+  onMenuClick?: () => void;
 }
 
-export function Header({ onCreateWorkspace }: HeaderProps) {
+export function Header({ onCreateWorkspace, onMenuClick }: HeaderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6">
-      {/* Search */}
-      <div className="flex items-center gap-4 flex-1 max-w-md">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search workspaces, models..."
-            className="h-9 w-full rounded-md border border-input bg-background pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-        </div>
+    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 lg:px-6">
+      {/* Left side - Menu button for mobile */}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onMenuClick}
+          className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors lg:hidden"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+        <h1 className="text-lg font-semibold text-foreground hidden sm:block">Dashboard</h1>
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* Create Workspace Button */}
-        <Button onClick={onCreateWorkspace} className="gap-2">
+        <Button onClick={onCreateWorkspace} className="gap-2" size="sm">
           <Plus className="h-4 w-4" />
-          Create Workspace
+          <span className="hidden sm:inline">Create Workspace</span>
         </Button>
 
         {isLoggedIn ? (
@@ -70,11 +71,11 @@ export function Header({ onCreateWorkspace }: HeaderProps) {
         ) : (
           <>
             {/* Login / Register */}
-            <Button variant="ghost" onClick={() => setIsLoggedIn(true)}>
-              Log in
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/login">Log in</Link>
             </Button>
-            <Button variant="outline" onClick={() => setIsLoggedIn(true)}>
-              Register
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/register">Register</Link>
             </Button>
           </>
         )}
